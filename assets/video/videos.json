@@ -1,0 +1,37 @@
+{
+ "commercial": {
+  "src": "/assets/video/commercial.mp4",
+  "mobile": "/assets/video/commercial-m.mp4",
+  "poster": "/assets/heroes/commercial.webp"
+ },
+ "services": {
+  "src": "/assets/video/services.mp4",
+  "mobile": "/assets/video/services-m.mp4",
+  "poster": "/assets/heroes/services.webp"
+ },
+ "foundations": {
+  "src": "/assets/video/foundations.mp4",
+  "mobile": "/assets/video/foundations-m.mp4",
+  "poster": "/assets/heroes/foundations.webp"
+ },
+ "about": {
+  "src": "/assets/video/about.mp4",
+  "mobile": "/assets/video/about-m.mp4",
+  "poster": "/assets/heroes/about.webp"
+ },
+ "areas": {
+  "src": "/assets/video/areas.mp4",
+  "mobile": "/assets/video/areas-m.mp4",
+  "poster": "/assets/heroes/areas.webp"
+ },
+ "quote": {
+  "src": "/assets/video/quote.mp4",
+  "mobile": "/assets/video/quote-m.mp4",
+  "poster": "/assets/heroes/quote.webp"
+ },
+ "work": {
+  "src": "/assets/video/work.mp4",
+  "mobile": "/assets/video/work-m.mp4",
+  "poster": "/assets/heroes/work.webp"
+ }
+}
