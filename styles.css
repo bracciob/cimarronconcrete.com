@@ -797,3 +797,65 @@ p { max-width: 68ch; }
 .lang a:hover { color: var(--white); }
 .lang a.is-on { background: var(--white); color: #0d0d0c; }
 @media (max-width: 600px) { .lang a { padding: 7px 9px; } .nav__cta { gap: 10px; } }
+
+/* ==========================================================================
+   Mobile refinement (phones). Calmer type scale, tighter rhythm, full-width
+   actions, no sticky bars covering content, and stacked service stories.
+   ========================================================================== */
+@media (max-width: 600px) {
+  :root { --gutter: 20px; }
+  body { font-size: 15.5px; line-height: 1.65; }
+  .section { padding: 64px 0; }
+  .section-head { margin-bottom: 28px; }
+  .eyebrow { font-size: 10px; letter-spacing: .16em; gap: 10px; margin-bottom: 12px; }
+  .eyebrow::before { width: 18px; }
+
+  /* type scale */
+  .hero__title { font-size: clamp(38px, 11vw, 46px); line-height: .94; margin-bottom: 16px; }
+  .hero__sub { font-size: 15.5px; line-height: 1.6; margin-bottom: 24px; }
+  .phero__title { font-size: clamp(34px, 9.6vw, 42px); line-height: .95; margin-bottom: 14px; }
+  .phero__sub { font-size: 15px; }
+  .phero__content { padding-top: 116px; padding-bottom: 40px; }
+  .h2, .cta-band .h2 { font-size: clamp(30px, 8.4vw, 36px); line-height: .95; }
+  .h3 { font-size: 22px; }
+  .lead { font-size: 16.5px; line-height: 1.6; }
+  .build__steps strong { font-size: clamp(28px, 8vw, 34px); }
+  .statement { padding: 72px 0 56px; }
+  .statement__text { font-size: 21px; line-height: 1.32; letter-spacing: -.015em; margin-bottom: 32px; }
+  .intro-split__lead { font-size: 18.5px; line-height: 1.45; }
+  .stat b { font-size: 48px; }
+  .standard b { font-size: 44px; }
+  .stack__title { font-size: 30px; }
+  .svc-rail .card h3 { font-size: 24px; }
+  .story__step h3 { font-size: 22px; }
+
+  /* actions: equal, full-width buttons */
+  .hero__actions, .cta-band__actions { flex-direction: column; gap: 10px; }
+  .hero__actions .btn, .cta-band__actions .btn { width: 100%; padding: 15px 20px; }
+
+  /* hero copy reads cleanly over the film */
+  .build__intro { bottom: 40px; }
+  .build__intro::before { content: ""; position: absolute; inset: -60vh calc(-1 * var(--gutter)) -40px; z-index: -1; background: linear-gradient(0deg, rgba(13, 13, 12, .92) 0%, rgba(13, 13, 12, .55) 45%, rgba(13, 13, 12, 0) 100%); pointer-events: none; }
+
+  /* cards and photos */
+  .svc-rail .card__media, .card__media { aspect-ratio: 16 / 11; }
+  .stats { margin-top: 44px; }
+  .work-teaser__grid { grid-auto-rows: 38vw; gap: 8px; }
+  .work-teaser__grid figure:nth-child(6) { grid-column: 1 / -1; }
+
+  /* service pages: the section bar scrolls away instead of covering content */
+  .svc-nav { position: relative; top: 0; }
+  .svc-nav a { padding: 8px 13px; font-size: 13px; }
+  .specs { grid-template-columns: 1fr 1fr; margin-top: 36px; }
+  .faq summary { font-size: 16px; }
+}
+
+/* Service stories on phones and small tablets: each step carries its own photo */
+@media (max-width: 1000px) {
+  .story.is-stacked .story__media { display: none; }
+  .story.is-stacked .story__steps { padding: 0; display: grid; gap: 34px; }
+  .story.is-stacked .story__step { min-height: 0; opacity: 1; padding: 0; border: 0; }
+  .story__thumb { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 2px; margin-bottom: 18px; border: 1px solid var(--line-2); }
+}
+@media (min-width: 1001px) { .story__thumb { display: none; } }
+@media (max-width: 600px) { .build__intro .eyebrow, .phero .eyebrow { letter-spacing: .07em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } }

@@ -531,6 +531,12 @@
   function services() {
     $$("[data-story]").forEach((story) => {
       const steps = $$(".story__step", story), imgs = $$(".story__img", story), count = $("[data-story-count]", story);
+      // Phones and small tablets: give every step its own photo and drop the pinned frame.
+      if (matchMedia("(max-width: 1000px)").matches) {
+        steps.forEach((s, i) => { const src = imgs[i]; if (!src) return; const t = src.cloneNode(); t.className = "story__thumb"; t.removeAttribute("data-step"); s.prepend(t); });
+        story.classList.add("is-stacked");
+        return;
+      }
       const set = (k) => {
         steps.forEach((s, i) => s.classList.toggle("is-on", i === k));
         imgs.forEach((im, i) => im.classList.toggle("is-on", i === k));
@@ -540,6 +546,8 @@
       const io = new IntersectionObserver((entries) => entries.forEach((en) => en.isIntersecting && set(+en.target.dataset.step)), { rootMargin: "-45% 0px -45% 0px" });
       steps.forEach((s) => io.observe(s));
     });
+    const cur = $('.svc-nav a[aria-current="page"]');
+    if (cur) { const bar = cur.parentElement; bar.scrollLeft = cur.offsetLeft - (bar.clientWidth - cur.offsetWidth) / 2; }
     const links = $$('.svc-nav a[href^="#"]');
     if (links.length) {
       const io = new IntersectionObserver((entries) => entries.forEach((en) => {
