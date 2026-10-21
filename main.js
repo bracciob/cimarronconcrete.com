@@ -12,7 +12,10 @@
     "Please add your name, a valid email and a phone number.": "Agregue su nombre, un correo válido y un número de teléfono.",
     "Sending...": "Enviando...", "Send My Request": "Enviar mi Solicitud",
     "Thanks! Your request is in. We'll get back to you as soon as possible.": "¡Gracias! Recibimos su solicitud. Le responderemos lo antes posible.",
-    "Google review": "Reseña de Google", "out of 5 stars": "de 5 estrellas",
+    "Google review": "Reseña de Google", "Submit Application": "Enviar Solicitud",
+    "Please add your name, phone, a valid email and the position you want.": "Agregue su nombre, teléfono, un correo válido y el puesto que busca.",
+    "That resume is over 5 MB. Please attach a smaller file.": "El currículum pesa más de 5 MB. Adjunte un archivo más pequeño.",
+    "Thanks! Your application is in. We'll reach out if it's a fit.": "¡Gracias! Recibimos su solicitud. Nos comunicaremos con usted si es una buena opción.", "out of 5 stars": "de 5 estrellas",
     "Commercial concrete by Cimarron Concrete": "Concreto comercial de Cimarron Concrete",
     "Commercial sidewalk along a new building by Cimarron Concrete": "Banqueta comercial junto a un edificio nuevo de Cimarron Concrete",
     "Commercial sidewalk with ramp by Cimarron Concrete": "Banqueta comercial con rampa de Cimarron Concrete",
@@ -793,7 +796,7 @@
       submit.disabled = true;
       submit.textContent = T("Sending...");
       try {
-        const r = await fetch(API + "/api/quote", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+        const r = await fetch(API + "/api/quote", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...data, lang: LANG_ES ? "es" : "en" }) });
         if (!r.ok) throw new Error(String(r.status));
         form.reset();
         status.textContent = T("Thanks! Your request is in. We'll get back to you as soon as possible.");
@@ -810,6 +813,51 @@
     });
   }
 
+
+  /* ---------- Careers: job application ---------- */
+  function applyForm() {
+    const form = $("#applyForm");
+    if (!form) return;
+    const status = $("#applyStatus"), submit = $("#applySubmit");
+    const readFile = (f) => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result)); r.onerror = rej; r.readAsDataURL(f); });
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      status.className = "form__status";
+      const fd = new FormData(form);
+      const data = { lang: LANG_ES ? "es" : "en" };
+      for (const [k, val] of fd.entries()) {
+        if (k === "resume") continue;
+        if (k === "skills" || k === "languages") (data[k] = data[k] || []).push(val); else data[k] = val;
+      }
+      let bad = null;
+      [["name", (x) => x.trim().length > 1], ["phone", (x) => x.replace(/\D/g, "").length >= 10], ["email", (x) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x)], ["position", (x) => !!x]].forEach(([k, ok]) => {
+        const valid = ok(data[k] || "");
+        form.elements[k].closest(".field").classList.toggle("is-invalid", !valid);
+        if (!valid && !bad) bad = form.elements[k];
+      });
+      if (bad) { status.textContent = T("Please add your name, phone, a valid email and the position you want."); status.classList.add("is-err"); bad.focus(); return; }
+      const file = form.elements.resume.files[0];
+      if (file) {
+        if (file.size > 5 * 1024 * 1024) { status.textContent = T("That resume is over 5 MB. Please attach a smaller file."); status.classList.add("is-err"); return; }
+        data.resume = { name: file.name, data: await readFile(file) };
+      }
+      submit.disabled = true;
+      submit.textContent = T("Sending...");
+      try {
+        const r = await fetch(API + "/api/apply", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+        if (!r.ok) throw new Error(String(r.status));
+        form.reset();
+        status.textContent = T("Thanks! Your application is in. We'll reach out if it's a fit.");
+        status.classList.add("is-ok");
+      } catch (_) {
+        status.innerHTML = LANG_ES ? `No pudimos enviarlo. Llame al <a href="tel:+19703882222">(970) 388-2222</a> o escriba a <a href="mailto:info@cimarronconcrete.com">info@cimarronconcrete.com</a>.` : `We couldn't send that. Please call <a href="tel:+19703882222">(970) 388-2222</a> or email <a href="mailto:info@cimarronconcrete.com">info@cimarronconcrete.com</a>.`;
+        status.classList.add("is-err");
+      } finally {
+        submit.disabled = false;
+        submit.textContent = T("Submit Application");
+      }
+    });
+  }
   /* ---------- Go ---------- */
   if (hasGsap && document.fonts?.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
   reveal();
@@ -820,6 +868,7 @@
   videos();
   areaMap();
   quoteForm();
+  applyForm();
   if (isHome) buildSequence();
   else if (Loader.active) {
     let fake = 0;
