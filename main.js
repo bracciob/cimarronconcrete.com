@@ -862,7 +862,19 @@
   if (hasGsap && document.fonts?.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
   reveal();
   services();
+  function reviewTab() {
+    const root = document.querySelector("[data-rv-tab]");
+    if (!root) return;
+    const btn = root.querySelector("[data-rv-toggle]"), card = root.querySelector("#rv-card");
+    const set = (open) => { card.hidden = !open; btn.setAttribute("aria-expanded", String(open)); };
+    btn.addEventListener("click", () => set(card.hidden));
+    root.querySelector("[data-rv-close]").addEventListener("click", () => { set(false); btn.focus(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !card.hidden) set(false); });
+    document.addEventListener("click", (e) => { if (!card.hidden && !root.contains(e.target)) set(false); });
+  }
+
   tabs();
+  reviewTab();
   reviews();
   gallery();
   videos();
