@@ -897,3 +897,18 @@ p { max-width: 68ch; }
 .rv-tab__more:hover { color: var(--white); }
 .page-quote .rv-tab { display: none; }
 @media (max-width: 640px) { .rv-tab { right: 12px; bottom: 12px; } .rv-tab__toggle { padding: 10px 15px; font-size: 12px; } }
+
+/* /review/ landing (texted review link) */
+.review-go { position: relative; min-height: 100svh; display: grid; align-items: center; padding: calc(var(--nav-h) + 40px) 0 60px; overflow: hidden; }
+.review-go__media, .review-go__shade { position: absolute; inset: 0; }
+.review-go__media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+.review-go__shade { background: linear-gradient(180deg, rgba(13, 13, 12, .55) 0%, rgba(13, 13, 12, .82) 55%, rgba(13, 13, 12, .96) 100%); }
+.review-go__inner { position: relative; max-width: 640px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.review-go__stars { color: var(--amber); font-size: 26px; letter-spacing: 6px; margin-bottom: 18px; }
+.review-go .phero__title { margin: 12px 0 16px; }
+.review-go__text { color: var(--silver); font-size: 17px; line-height: 1.55; max-width: 440px; margin: 0 0 30px; }
+.review-go__btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 18px 30px; font-size: 15px; white-space: nowrap; }
+.review-go__btn svg { background: #fff; border-radius: 50%; padding: 2px; flex: none; }
+.review-go__more { margin-top: 18px; font-size: 13px; color: var(--steel); text-decoration: underline; text-underline-offset: 3px; }
+.review-go__more:hover { color: var(--white); }
+.page-review .rv-tab, .page-review .cta-band { display: none; }
